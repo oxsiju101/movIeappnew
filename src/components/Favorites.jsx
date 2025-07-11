@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
-import MovieModal from "./MovieModal"; // ✅ Import the modal
+import MovieModal from "./MovieModal"; 
 import NavBar from "./NavBar";
 import GenreList from "./GenreList";
 

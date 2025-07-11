@@ -13,13 +13,13 @@ const NavBar = ({ query, setQuery, handleSearch, darkMode, setDarkMode }) => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-b shadow dark:border-gray-700 transition-colors duration-300 md:shadow-lg md:dark:shadow-none md:rounded-b-lg md:dark:bg-gray-800 md:border-b-0 dark:md:border-gray-700 dark:md:shadow-lg dark:md:shadow-gray-800 dark:md:rounded-b-lg dark:md:border-b-0">
       <div className="max-w-screen-xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
-        {/* Logo */}
+       
         <div className="flex items-center justify-between w-full md:w-auto">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
             🎬 Movie App
           </h1>
 
-          {/* Mobile Menu Button */}
+     
           <button
             className="md:hidden text-gray-800 dark:text-gray-200 focus:outline-none"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -27,7 +27,7 @@ const NavBar = ({ query, setQuery, handleSearch, darkMode, setDarkMode }) => {
             ☰
           </button>
         </div>
-        {/* Navigation Links */}
+       
         <div
           className={`${
             isMobileMenuOpen ? "block" : "hidden"

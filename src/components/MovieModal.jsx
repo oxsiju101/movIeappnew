@@ -8,8 +8,11 @@ const MovieModal = ({ movie, onClose }) => {
   const [details, setDetails] = useState(null);
 
   useEffect(() => {
+    if (!movie?.id) return;
+
+    const mediaType = movie.media_type || "movie"; 
     axios
-      .get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
+      .get(`https://api.themoviedb.org/3/${mediaType}/${movie.id}`, {
         params: { api_key: API_KEY },
       })
       .then((res) => setDetails(res.data))
@@ -18,62 +21,70 @@ const MovieModal = ({ movie, onClose }) => {
 
   if (!details) return null;
 
+  const title = details.title || details.name || "Untitled";
+  const description = details.overview || "No description available.";
+  const poster = details.poster_path
+    ? `${IMG_URL}${details.poster_path}`
+    : "/placeholder.png";
+  const releaseDate = details.release_date || details.first_air_date || "N/A";
+  const rating = details.vote_average?.toFixed(1) || "N/A";
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-900 rounded-lg max-w-xl w-full overflow-auto shadow-lg">
-        {/* Close Button */}
-        <div className="flex justify-end p-4">
-          <button
-            onClick={onClose}
-            className="text-xl text-gray-700 dark:text-gray-200 hover:text-red-500"
-          >
-            ✕
-          </button>
-        </div>
+      <div className="bg-white dark:bg-gray-900 rounded-lg max-w-2xl w-full overflow-auto shadow-lg">
+        <button
+          onClick={onClose}
+          className="text-right p-4 text-xl absolute top-2 right-4 text-gray-700 dark:text-gray-200"
+        >
+          ✕
+        </button>
 
-        {/* Poster */}
+       
         <img
-          src={
-            details.poster_path
-              ? `${IMG_URL}${details.poster_path}`
-              : "/placeholder.png"
-          }
-          alt={details.title}
-          className="w-full h-80 object-cover rounded-t"
+          src={poster}
+          alt={title}
+          className="w-full h-72 object-cover rounded-t"
         />
 
-        {/* Movie Info */}
-        <div className="p-6">
+    
+        <div className="p-6 space-y-4">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {details.title}
+            {title}
           </h2>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">
-            {details.overview || "No description available."}
-          </p>
-          <p className="mt-4 text-sm text-gray-700 dark:text-gray-400">
-            <strong>Release:</strong> {details.release_date}
-          </p>
-          <p className="text-sm text-gray-700 dark:text-gray-400">
-            <strong>Rating:</strong> {movie.vote_average}/10
-          </p>
 
-          {/* Action Buttons */}
-          <div className="mt-6 flex gap-4">
+          <p className="text-gray-600 dark:text-gray-300">{description}</p>
+
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            <p>
+              <strong>Release:</strong> {releaseDate}
+            </p>
+            <p>
+              <strong>Rating:</strong> {rating}/10
+            </p>
+            {details.number_of_seasons && (
+              <p>
+                <strong>Seasons:</strong> {details.number_of_seasons}
+              </p>
+            )}
+          </div>
+
+        
+          <div className="flex gap-4 mt-4">
             <a
-              href={`https://www.themoviedb.org/movie/${movie.id}`}
+              href={`https://www.themoviedb.org/${
+                movie.media_type || "movie"
+              }/${movie.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
             >
-              ▶ Watch Now
+              🎬 Watch Now
             </a>
             <a
-              href={`https://www.themoviedb.org/movie/${movie.id}/download`} // adjust if you have a download route
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium transition"
+              href="#"
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
             >
-              ⬇ Download
+              ⬇️ Download
             </a>
           </div>
         </div>

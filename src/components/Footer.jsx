@@ -19,7 +19,7 @@ const Footer = () => {
 
           <div className="sm:justify-center">
             <a
-              href="x.com/oxsiju"
+              href="https://x.com/oxsiju"
               className="group w-9 h-9 rounded-full border border-gray-300 dark:border-gray-600 flex justify-center items-center hover:border-indigo-600 dark:hover:border-indigo-400"
             >
               <svg

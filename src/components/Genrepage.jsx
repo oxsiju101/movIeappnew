@@ -19,47 +19,12 @@ const GenrePage = () => {
   const [activeTab, setActiveTab] = useState("movie");
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-
   useEffect(() => {
     setGenreName(genreMap[genreId] || "Unknown Genre");
   }, [genreId, genreMap]);
 
   useEffect(() => {
-    const fetchInitial = async () => {
-      setIsLoading(true);
-      setPage(1);
-      setMediaData([]);
-
-      try {
-        const endpoints = ["movie", "tv"].map((type) =>
-          axios
-            .get(`${BASE_URL}/discover/${type}`, {
-              params: {
-                api_key: API_KEY,
-                with_genres: genreId,
-                page: 1,
-              },
-            })
-            .then((res) =>
-              res.data.results.map((item) => ({ ...item, media_type: type }))
-            )
-        );
-        const results = (await Promise.all(endpoints)).flat();
-        setMediaData(results);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchInitial();
-  }, [genreId]);
-
-  useEffect(() => {
-    if (page === 1) return;
-
-    const fetchMore = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       try {
         const res = await axios.get(`${BASE_URL}/discover/${activeTab}`, {
@@ -69,13 +34,13 @@ const GenrePage = () => {
             page,
           },
         });
-        setMediaData((prev) => [
-          ...prev,
-          ...res.data.results.map((item) => ({
-            ...item,
-            media_type: activeTab,
-          })),
-        ]);
+
+        const results = res.data.results.map((item) => ({
+          ...item,
+          media_type: activeTab,
+        }));
+
+        setMediaData((prev) => (page === 1 ? results : [...prev, ...results]));
       } catch (err) {
         console.error(err);
       } finally {
@@ -83,28 +48,31 @@ const GenrePage = () => {
       }
     };
 
-    fetchMore();
+    fetchData();
   }, [page, activeTab, genreId]);
 
-  const filtered = useMemo(
-    () => mediaData.filter((m) => m.media_type === activeTab),
-    [mediaData, activeTab]
-  );
+  useEffect(() => {
+    setPage(1);
+    setMediaData([]);
+  }, [activeTab, genreId]);
+
+  const filtered = useMemo(() => mediaData, [mediaData]);
 
   return (
     <div className="mt-6">
       <h1 className="text-2xl md:text-3xl pl-2 my-2 border-l-4 font-sans font-bold border-teal-400 dark:text-gray-200 mt-12 mb-4">
-        Genre: {genreName} <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">(Click on a movie to see details)</span>
+        Genre: {genreName}{" "}
+        <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+          (Click on a movie to see details)
+        </span>
       </h1>
 
-      {/* Tabs */}
       <div className="flex justify-center mb-6 border-b border-gray-300 dark:border-gray-700">
         {["movie", "tv"].map((type) => (
           <button
             key={type}
             onClick={() => {
               setActiveTab(type);
-              setPage(1);
             }}
             className={`flex items-center px-5 py-2 text-sm md:text-base font-semibold border-b-2 transition-colors ${
               activeTab === type
@@ -122,7 +90,6 @@ const GenrePage = () => {
         ))}
       </div>
 
-      {/* Movie/TV list */}
       <MovieList
         movies={filtered}
         isLoading={isLoading}
