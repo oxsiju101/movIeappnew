@@ -7,7 +7,7 @@ import GenreList from "./GenreList";
 
 const API_KEY = "12b41800b75925b6f6f4a2b2701f1c00";
 
-const Favorites = () => {
+const Favorites = ({ movie }) => {
   const [favorites, setFavorites] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null); // ✅ State for modal
 
@@ -33,11 +33,11 @@ const Favorites = () => {
       <NavBar />
       <div className="mt-6">
         <h1 className="text-2xl md:text-3xl pl-2 my-2 border-l-4  font-sans font-bold border-teal-400 dark:text-gray-200 mt-12 mb-4">
-        Favorite Movies
-        <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
-          (Click on a movie to see details)
-        </span>
-      </h1>
+          Favorite Movies
+          <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+            (Click on a movie to see details)
+          </span>
+        </h1>
 
         {favorites.length === 0 ? (
           <p className="text-gray-600 dark:text-gray-400">No favorites yet.</p>
@@ -47,7 +47,7 @@ const Favorites = () => {
               <MovieCard
                 key={movie.id}
                 movie={movie}
-                onClick={setSelectedMovie}
+                onClick={() => setSelectedMovie(movie)}
               />
             ))}
           </div>
