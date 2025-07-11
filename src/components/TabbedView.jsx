@@ -65,6 +65,7 @@ const TabbedView = ({ movies, isLoading, loadMore }) => {
           movies={filteredMovies}
           isLoading={isLoading}
           loadMore={loadMore}
+          onClick={() => setSelectedMovie(movie)}
         />
       </div>
     </div>
