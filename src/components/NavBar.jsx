@@ -57,28 +57,7 @@ const NavBar = ({ query, setQuery, handleSearch, darkMode, setDarkMode }) => {
 
         {/* Search & Theme Toggle */}
         <div className="mt-3 md:mt-0 w-full md:w-auto flex flex-col sm:flex-row items-center gap-3 md:gap-4">
-          <form
-            onSubmit={handleSearch}
-            className="relative w-full sm:w-64 order-2 sm:order-1"
-          >
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search movies..."
-              className="w-full bg-blue-100 dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors"
-            />
-            <svg
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500 dark:text-gray-300"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              fill="currentColor"
-            >
-              <path d="M46,40.02... (icon path)" />
-            </svg>
-          </form>
-
-          <button
+                    <button
             onClick={() => setDarkMode(!darkMode)}
             aria-label="Toggle Dark Mode"
             className="order-1 sm:order-2 w-9 h-9 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
