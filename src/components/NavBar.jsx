@@ -16,7 +16,7 @@ const NavBar = ({ query, setQuery, handleSearch, darkMode, setDarkMode }) => {
        
         <div className="flex items-center justify-between w-full md:w-auto">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            🎬 Movie App
+            🎬Asap Movies App
           </h1>
 
      
